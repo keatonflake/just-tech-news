@@ -1,13 +1,13 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
+const bcrypt = require('bcrypt');
 
 // create our user model
-class User extends Model {}
+class User extends Model { }
 
 // define table columns and configuration
 User.init(
     {
-        // table Column definitions go here
         id: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -34,19 +34,25 @@ User.init(
             }
         }
     },
-        
     {
-        // table configuration options go here
-        sequelize,
-        // dont automaticly create created at/updated at timestamp fields
-        timestamps: false,
-        // dont pluralize the name of the database table
-        freezeTableName: true,
-        // use underscores instead of camel casing (i.e. `comment_text)
-        underscored: true,
-        // make it so our model name stays lowercase in the database
-        modelName: 'user'
-    }
+        hooks: {
+            // set up beforeCreate lifecycle "hook" functionality
+            async beforeCreate(newUserData) {
+                newUserData.password = await bcrypt.hash(newUserData.password, 10);
+                return newUserData;
+            },
+            // set up beforeUpdate lifecycle "hook" functionality
+            async beforeUpdate(updatedUserData) {
+                updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
+                return updatedUserData;
+            }
+    },
+    sequelize,
+    timestamps: false,
+    freezeTableName: true,
+    underscored: true,
+    modelName: 'user'
+  }
 );
 
 module.exports = User;
