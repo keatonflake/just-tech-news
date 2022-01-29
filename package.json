@@ -19,5 +19,14 @@
   },
   "devDependencies": {
     "jest": "^25.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keatonflake/just-tech-news.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/keatonflake/just-tech-news/issues"
+  },
+  "homepage": "https://github.com/keatonflake/just-tech-news#readme"
 }
